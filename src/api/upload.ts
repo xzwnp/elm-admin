@@ -1,0 +1,1 @@
+export const uploadUrl: any = import.meta.env.VITE_BASE_URL + "/oss/saveFile"

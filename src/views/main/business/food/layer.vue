@@ -1,50 +1,20 @@
 <template>
   <Layer :layer="layer" @confirm="submit" ref="layerDom">
-    <el-form :model="form" :rules="rules" ref="ruleForm" label-width="120px" label-position="left"
-             style="margin-left:50px;margin-right: 30px">
-      <el-form-item label="商家名称" prop="businessName">
-        <el-input v-model="form.businessName" placeholder="商家名称"></el-input>
+    <el-form :model="form" :rules="rules" ref="ruleForm" label-width="120px" style="margin-right:30px;">
+      <el-form-item label="食品名称" prop="foodName">
+        <el-input v-model="form.foodName" placeholder="食品名称"></el-input>
       </el-form-item>
-      <el-form-item label="商家密码" prop="password">
-        <el-input v-model="form.password" placeholder="请输入密码"></el-input>
+      <el-form-item label="食品介绍" prop="foodExplain">
+        <el-input v-model="form.foodExplain" placeholder="食品介绍"></el-input>
       </el-form-item>
-      <el-form-item label="商家地址" prop="businessAddress">
-        <el-input v-model="form.businessAddress" placeholder="商家地址"></el-input>
+      <el-form-item label="食品价格" prop="foodPrice">
+        <el-input v-model="form.foodPrice" placeholder="食品介绍"></el-input>
       </el-form-item>
-      <el-form-item label="商家介绍" prop="businessExplain">
-        <el-input v-model="form.businessExplain" placeholder="商家介绍"></el-input>
+      <el-form-item label="原价" prop="originPrice">
+        <el-input v-model="form.originPrice" placeholder=""></el-input>
       </el-form-item>
-      <el-form-item label="商家图片" prop="cover">
+      <el-form-item label="封面" prop="cover">
         <image-uploader v-model:image-url="form.cover"></image-uploader>
-      </el-form-item>
-      <el-form-item label="点餐分类" prop="type">
-        <el-select v-model="form.type" placeholder="请选择" clearable>
-          <el-option v-for="item in selectData" :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="起送费" prop="startPrice">
-        <el-input v-model="form.startPrice" placeholder="起送费"></el-input>
-      </el-form-item>
-      <el-form-item label="配送费" prop="deliveryPrice">
-        <el-input v-model="form.deliveryPrice" placeholder="配送费"></el-input>
-      </el-form-item>
-      <el-form-item label="备注" prop="remarks">
-        <el-input v-model="form.remarks" placeholder="备注"></el-input>
-      </el-form-item>
-      <el-form-item label="红包" prop="redPacket">
-        <el-input v-model="form.redPacket" placeholder="红包"></el-input>
-      </el-form-item>
-      <el-form-item label="评分" prop="score">
-        <el-input v-model="form.score" placeholder="评分"></el-input>
-      </el-form-item>
-      <el-form-item label="折扣" prop="discounts">
-        <el-input v-model="form.discounts" placeholder="折扣"></el-input>
-      </el-form-item>
-      <el-form-item label="销量" prop="sellCount">
-        <el-input v-model="form.sellCount" placeholder="销量"></el-input>
-      </el-form-item>
-      <el-form-item label="热门评论" prop="hotComment">
-        <el-input v-model="form.hotComment" placeholder="热门评论"></el-input>
       </el-form-item>
     </el-form>
   </Layer>
@@ -55,15 +25,15 @@ import type {LayerType} from '@/components/layer/index.vue'
 import type {Ref} from 'vue'
 import type {ElFormItemContext} from 'element-plus/lib/el-form/src/token'
 import {defineComponent, ref} from 'vue'
-import {add, update} from '@/api/business/business'
+import {add, update} from '@/api/business/food'
 import {selectData, radioData} from './enum'
 import Layer from '@/components/layer/index.vue'
-import {uploadUrl} from "@/api/upload";
-import imageUploader from "@/components/ImageUploader/index.vue";
+import ImageUploader from "@/components/ImageUploader/index.vue";
 
 export default defineComponent({
   components: {
-    Layer, imageUploader
+    Layer,
+    ImageUploader
   },
   props: {
     layer: {
@@ -81,8 +51,7 @@ export default defineComponent({
     const ruleForm: Ref<ElFormItemContext | null> = ref(null)
     const layerDom: Ref<LayerType | null> = ref(null)
     let form = ref({
-      name: '',
-      cover: ''
+      name: ''
     })
     const rules = {
       name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
@@ -106,8 +75,7 @@ export default defineComponent({
       layerDom,
       ruleForm,
       selectData,
-      radioData,
-      uploadUrl
+      radioData
     }
   },
   methods: {

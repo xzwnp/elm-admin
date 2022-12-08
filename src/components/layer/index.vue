@@ -1,5 +1,5 @@
 <template>
-  <div v-drag style="height: 500px;overflow: auto">
+  <div v-drag style="height: 500px;overflow: auto;">
     <el-dialog
         ref="dialog"
         v-model="layer.show"

@@ -25,24 +25,13 @@
           @getTableData="getTableData"
           @selection-change="handleSelectionChange"
       >
+        <el-table-column prop="id" label="订单号" header-align="center" align="center"></el-table-column>
         <el-table-column prop="businessId" label="商家编号" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="businessName" label="商家名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="businessAddress" label="商家地址" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="businessExplain" label="商家介绍" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="cover" label="商家图片" header-align="center" align="center">
-          <template #default="scope">
-            <el-image :src="scope.row.cover"/>
-          </template>
-        </el-table-column>
-        <el-table-column prop="type" label="点餐分类" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="startPrice" label="起送费" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="deliveryPrice" label="配送费" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="remarks" label="备注" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="redPacket" label="红包" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="score" label="评分" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="discounts" label="折扣" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="sellCount" label="销量" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="hotComment" label="热门评论" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="businessName" label="商家名" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="statusName" label="订单状态" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="totalPrice" label="总价" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="userId" label="买家id" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="200">
           <template #default="scope">
             <el-button @click="handleEdit(scope.row)">编辑</el-button>
@@ -63,11 +52,11 @@
 import {defineComponent, ref, reactive} from 'vue'
 import Table from '@/components/table/index.vue'
 import {Page} from '@/components/table/type'
-import {getData, del} from '@/api/business/business'
+import {getData, del} from '@/api/order/order'
 import Layer from './layer.vue'
 import {ElMessage} from 'element-plus'
 import type {LayerInterface} from '@/components/layer/index.vue'
-import {selectData, radioData} from './enum'
+import {orderStatus, radioData} from './enum'
 
 export default defineComponent({
   name: 'crudTable',
@@ -116,8 +105,8 @@ export default defineComponent({
             let data = res.data.list
             if (Array.isArray(data)) {
               data.forEach(d => {
-                const select = selectData.find(select => select.value === d.choose)
-                select ? d.chooseName = select.label : d.chooseName = d.choose
+                const select = orderStatus.find(select => select.value === d.status)
+                select ? d.statusName = select.label : d.statusName = d.status
                 const radio = radioData.find(select => select.value === d.radio)
                 radio ? d.radioName = radio.label : d.radio
               })
@@ -136,9 +125,11 @@ export default defineComponent({
     }
     // 删除功能
     const handleDel = (data: object[]) => {
-      let params = data.map((e: any) => {
-        return e.businessId
-      })
+      let params = {
+        ids: data.map((e: any) => {
+          return e.id
+        }).join(',')
+      }
       del(params)
           .then(res => {
             ElMessage({

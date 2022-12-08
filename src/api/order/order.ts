@@ -3,7 +3,7 @@ import request from '@/utils/system/request'
 // 获取数据api
 export function getData(data: object) {
     return request({
-        url: '/business/admin/page',
+        url: '/order/admin/page',
         method: 'post',
         data
     })
@@ -12,7 +12,7 @@ export function getData(data: object) {
 // 获取分类数据
 export function getCategory(data: object) {
     return request({
-        url: '/business/admin/category',
+        url: '/order/admin/page',
         method: 'post',
         data
     })
@@ -21,9 +21,8 @@ export function getCategory(data: object) {
 // 获取树组织数据
 export function getTree(data: object) {
     return request({
-        url: '/business/admin/tree',
+        url: '/order/admin/tree',
         method: 'post',
-
         data
     })
 }
@@ -31,7 +30,7 @@ export function getTree(data: object) {
 // 新增
 export function add(data: object) {
     return request({
-        url: '/business/admin',
+        url: '/order/admin',
         method: 'post',
 
         data
@@ -41,7 +40,7 @@ export function add(data: object) {
 // 编辑
 export function update(data: object) {
     return request({
-        url: '/business/admin',
+        url: '/order/admin',
         method: 'put',
         data
     })
@@ -50,7 +49,7 @@ export function update(data: object) {
 // 删除
 export function del(data: object) {
     return request({
-        url: '/business/admin',
+        url: '/order/admin',
         method: 'DELETE',
         data
     })

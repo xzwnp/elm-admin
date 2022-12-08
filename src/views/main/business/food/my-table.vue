@@ -25,24 +25,18 @@
           @getTableData="getTableData"
           @selection-change="handleSelectionChange"
       >
-        <el-table-column prop="businessId" label="商家编号" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="businessName" label="商家名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="businessAddress" label="商家地址" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="businessExplain" label="商家介绍" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="cover" label="商家图片" header-align="center" align="center">
+        <el-table-column prop="foodId" label="食品编号" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="foodName" label="食品名称" header-align="center" align="center"
+                         min-width="110"></el-table-column>
+        <el-table-column prop="foodExplain" label="食品介绍" header-align="center" align="center"
+                         min-width="110"></el-table-column>
+        <el-table-column prop="foodPrice" label="食品介绍" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="originPrice" label="原价" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="cover" label="封面" header-align="center" align="center">
           <template #default="scope">
             <el-image :src="scope.row.cover"/>
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="点餐分类" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="startPrice" label="起送费" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="deliveryPrice" label="配送费" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="remarks" label="备注" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="redPacket" label="红包" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="score" label="评分" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="discounts" label="折扣" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="sellCount" label="销量" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="hotComment" label="热门评论" header-align="center" align="center"></el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="200">
           <template #default="scope">
             <el-button @click="handleEdit(scope.row)">编辑</el-button>
@@ -60,17 +54,16 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, reactive} from 'vue'
+import {defineComponent, ref, reactive, inject, watch} from 'vue'
 import Table from '@/components/table/index.vue'
 import {Page} from '@/components/table/type'
-import {getData, del} from '@/api/business/business'
+import {getData, del} from '@/api/business/food'
 import Layer from './layer.vue'
 import {ElMessage} from 'element-plus'
 import type {LayerInterface} from '@/components/layer/index.vue'
 import {selectData, radioData} from './enum'
 
 export default defineComponent({
-  name: 'crudTable',
   components: {
     Table,
     Layer
@@ -92,6 +85,7 @@ export default defineComponent({
       size: 20,
       total: 0
     })
+    const activeCategory: any = inject('active')
     const loading = ref(true)
     const tableData = ref([])
     const chooseData = ref([])
@@ -106,14 +100,15 @@ export default defineComponent({
         page.index = 1
       }
       let params = {
+        businessId: activeCategory.value.businessId,
         page: page.index,
         pageSize: page.size,
         ...query
       }
       getData(params)
           .then(res => {
-            console.log(res)
             let data = res.data.list
+            console.log(data)
             if (Array.isArray(data)) {
               data.forEach(d => {
                 const select = selectData.find(select => select.value === d.choose)
@@ -137,7 +132,7 @@ export default defineComponent({
     // 删除功能
     const handleDel = (data: object[]) => {
       let params = data.map((e: any) => {
-        return e.businessId
+        return e.foodId
       })
       del(params)
           .then(res => {
@@ -160,7 +155,10 @@ export default defineComponent({
       layer.row = row
       layer.show = true
     }
-    getTableData(true)
+    watch(activeCategory, (newVal) => {
+      getTableData(true)
+    })
+    // getTableData(true)
     return {
       query,
       tableData,
@@ -179,5 +177,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
+.layout-container {
+  width: calc(100% - 10px);
+  height: 100%;
+  margin: 0 0 0 10px;
+}
 </style>

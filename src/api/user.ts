@@ -2,39 +2,35 @@ import request from '@/utils/system/request'
 
 // 登录api
 export function loginApi(data: object) {
-  return request({
-    url: '/user/login',
-    method: 'post',
-    baseURL: '/mock',
-    data
-  })
+    return request({
+        url: '/admin/login',
+        method: 'post',
+        data
+    })
 }
 
 // 获取用户信息Api
 export function getInfoApi(data: object) {
-  return request({
-    url: '/user/info',
-    method: 'post',
-    baseURL: '/mock',
-    data
-  })
+    return request({
+        url: '/admin/info',
+        method: 'get',
+        data
+    })
 }
 
 // 退出登录Api
 export function loginOutApi() {
-  return request({
-    url: '/user/out',
-    method: 'post',
-    baseURL: '/mock'
-  })
+    return request({
+        url: '/admin/out',
+        method: 'delete',
+    })
 }
 
-// 获取用户信息Api
+// 修改密码
 export function passwordChange(data: object) {
-  return request({
-    url: '/user/passwordChange',
-    method: 'post',
-    baseURL: '/mock',
-    data
-  })
+    return request({
+        url: '/admin/passwordChange',
+        method: 'post',
+        data
+    })
 }
